@@ -1,6 +1,6 @@
-package fun.madeby.libraryeventsproducer.controller;
+package fun.madeby.controller;
 
-import fun.madeby.libraryeventsproducer.domain.LibraryEvent;
+import fun.madeby.domain.LibraryEvent;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

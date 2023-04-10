@@ -1,4 +1,4 @@
-package fun.madeby.libraryeventsproducer.domain;
+package fun.madeby.domain;
 
 
 import lombok.AllArgsConstructor;

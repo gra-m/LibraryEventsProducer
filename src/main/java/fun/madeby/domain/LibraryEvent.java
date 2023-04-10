@@ -1,5 +1,6 @@
-package fun.madeby.libraryeventsproducer.domain;
+package fun.madeby.domain;
 
+import fun.madeby.domain.Book;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
