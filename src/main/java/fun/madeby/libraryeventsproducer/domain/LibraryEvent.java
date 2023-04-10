@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Data //getters setters etc
 @Builder //fluent api style
 public class LibraryEvent {
-private Integer LibraryEventId;
+private Integer libraryEventId;
 private Book book;
 }
