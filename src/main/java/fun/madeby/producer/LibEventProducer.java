@@ -30,7 +30,7 @@ public class LibEventProducer {
 
     // note orig code uses Listenable future and callback, this is deprecated.
     // for an event to be sent template: default-topic: must be set in application-local.yml
-    // Using deprecated code for now todo come back and update this
+    // Using deprecated code for now todo reverted to old spring version for ease of getting initial understanding of kafka
     /*CompletableFuture<SendResult<Integer, String>> completableFuture =  kafkaTemplate.sendDefault(key, value);
     completableFuture.whenCompleteAsync(new BiConsumer<SendResult<Integer, String>, Throwable>() {
           @Override
@@ -40,9 +40,7 @@ public class LibEventProducer {
           }
     });*/
 
-    @SuppressWarnings("unchecked")
-    ListenableFuture<SendResult<Integer, String>> listenableFuture =
-        (ListenableFuture<SendResult<Integer, String>>) kafkaTemplate.sendDefault(key, value);
+    ListenableFuture<SendResult<Integer, String>> listenableFuture =  kafkaTemplate.sendDefault(key, value);
     listenableFuture.addCallback(
         (new ListenableFutureCallback<SendResult<Integer, String>>() {
           @Override
