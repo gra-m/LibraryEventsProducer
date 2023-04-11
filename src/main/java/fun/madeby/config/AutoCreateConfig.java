@@ -34,6 +34,5 @@ public class AutoCreateConfig {
                 .partitions(3)
                 .replicas(3)
                 .build();
-
       }
 }
