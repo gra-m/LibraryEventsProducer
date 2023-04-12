@@ -1,4 +1,4 @@
-package fun.madeby.libraryeventsproducer;
+package fun.madeby;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
