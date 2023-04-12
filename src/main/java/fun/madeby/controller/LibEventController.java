@@ -2,6 +2,7 @@ package fun.madeby.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import fun.madeby.domain.LibEvent;
+import fun.madeby.domain.LibraryEventType;
 import fun.madeby.producer.LibEventProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,15 @@ public class LibEventController {
     this.libEventProducer = libEventProducer;
   }
 
+@PostMapping("/v2/lib-event")
+public ResponseEntity<LibEvent> postLibEvent(@RequestBody LibEvent libEvent)
+    throws JsonProcessingException {
+  libEvent.setLibEventType(LibraryEventType.NEW);
+  libEventProducer.sendLibEventPr(libEvent);
+  return ResponseEntity.status(HttpStatus.CREATED).body(libEvent);
+}
 
-
+//region <V1 ENDPOINTS>
 
 @PostMapping("/v1/lib-event-synchronous")
 
@@ -64,4 +72,5 @@ public ResponseEntity<LibEvent> postLibraryEventProducerRecord(@RequestBody LibE
 
   return ResponseEntity.status(HttpStatus.CREATED).body(libEvent);
 }
+//endregion
 }
