@@ -1,0 +1,4 @@
+org.junit.jupiter.api.extension.ParameterResolutionException: Discovered multiple competing ParameterResolvers for parameter [org.springframework.kafka.test.EmbeddedKafkaBroker ekb] in constructor [fun.madeby.controller.IntLibEventControllerTest(org.springframework.kafka.test.EmbeddedKafkaBroker,org.springframework.boot.test.web.client.TestRestTemplate)]: org.springframework.test.context.junit.jupiter.SpringExtension@21d5c1a0, org.springframework.kafka.test.condition.EmbeddedKafkaCondition
+
+https://github.com/spring-projects/spring-kafka/pull/1813/files
+https://github.com/spring-projects/spring-kafka/issues/1806
