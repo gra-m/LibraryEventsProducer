@@ -14,6 +14,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,12 +30,8 @@ import org.springframework.test.context.TestPropertySource;
 // avoid conflict with 8080 by using random // TestPropSource overrides the paths for kafka brokers
 // in application-local.yml
 
-@SpringBootTest(
-    classes = {EmbeddedKafkaBroker.class, ServletWebServerFactoryAutoConfiguration.class},
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EmbeddedKafka(
-    topics = {"lib-events"},
-    partitions = 3)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EmbeddedKafka (topics = "lib-events", controlledShutdown = true, partitions = 3)
 @DirtiesContext // to destroy
 @TestPropertySource(
     properties = {
@@ -43,19 +40,17 @@ import org.springframework.test.context.TestPropertySource;
     })
 public class IntLibEventControllerTest {
 
-
-  private EmbeddedKafkaBroker embeddedKafkaBroker;
+  @Autowired
   private TestRestTemplate restTemplate; // auto maps to RANDOM_PORT
+
+  @Autowired
+  private EmbeddedKafkaBroker embeddedKafkaBroker;
   private Consumer<Integer, String> consumer;
-         @Autowired
-public IntLibEventControllerTest(EmbeddedKafkaBroker embeddedKafkaBroker, TestRestTemplate restTemplate) {
-  this.embeddedKafkaBroker = embeddedKafkaBroker;
-  this.restTemplate = restTemplate;
-}
 
 
 @BeforeEach
   void setUp() {
+  
     Map<String, Object> configs =
         new HashMap<>(KafkaTestUtils.consumerProps("group1", "true", embeddedKafkaBroker));
     Consumer<Integer, String> consumer =
