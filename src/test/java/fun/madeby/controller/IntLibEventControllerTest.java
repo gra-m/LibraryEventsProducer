@@ -23,6 +23,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
 // avoid conflict with 8080 by using random // TestPropSource overrides the paths for kafka brokers
@@ -33,24 +34,27 @@ import org.springframework.test.context.TestPropertySource;
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(
     topics = {"lib-events"},
-    partitions = 3, controlledShutdown = true)
+    partitions = 3)
+@DirtiesContext // to destroy
 @TestPropertySource(
     properties = {
       "spring.kafka.producer.bootstrap-servers=${spring.embedded.kafka.brokers}",
       "spring.kafka.admin.properties.bootstrap.servers=${spring.embedded.kafka.brokers}"
     })
 public class IntLibEventControllerTest {
-@Autowired
+
+
   private EmbeddedKafkaBroker embeddedKafkaBroker;
   private TestRestTemplate restTemplate; // auto maps to RANDOM_PORT
   private Consumer<Integer, String> consumer;
+         @Autowired
+public IntLibEventControllerTest(EmbeddedKafkaBroker embeddedKafkaBroker, TestRestTemplate restTemplate) {
+  this.embeddedKafkaBroker = embeddedKafkaBroker;
+  this.restTemplate = restTemplate;
+}
 
-  @Autowired
-  IntLibEventControllerTest(EmbeddedKafkaBroker embeddedKafkaBroker, TestRestTemplate trt) {
-    this.restTemplate = trt;
-  }
 
-  @BeforeEach
+@BeforeEach
   void setUp() {
     Map<String, Object> configs =
         new HashMap<>(KafkaTestUtils.consumerProps("group1", "true", embeddedKafkaBroker));
@@ -72,7 +76,7 @@ public class IntLibEventControllerTest {
     // given
 
     Book book =
-        Book.builder().bookId(123).bookAuthor("Dilip").bookName("Kefku using Sprang Boat").build();
+        Book.builder().bookId(123).bookAuthor("Dilip").bookName("Kafka Using Spring Boot").build();
 
     LibEvent libEvent = LibEvent.builder().libraryEventId(null).book(book).build();
 
